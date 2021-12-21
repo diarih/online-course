@@ -6,7 +6,7 @@ dotenv.config();
 
 const db = require("./helpers/db");
 
-const PORT = 3001 || process.env.PORT;
+const PORT = process.env.PORT;
 const URI = process.env.MONGO_URI;
 
 app.listen(PORT, (req, res) => {
