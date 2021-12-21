@@ -6,3 +6,5 @@ const controller = require("../controllers/instructor.controller")
 instructorRouter.get("/", controller.getInstructors)
 
 instructorRouter.get("/:id", controller.getInstructor)
+
+module.exports = instructorRouter
