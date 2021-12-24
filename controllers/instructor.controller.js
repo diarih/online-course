@@ -33,22 +33,25 @@ class InstructorController {
     }
   }
   static async deleteInstructor(req, res) {
-      try {
-        const dataDelete = await InstructorModel.findOne({_id: req.params.id})
-        await SingerModel.deleteOne({_id: req.params.id})
-        res.status(200).send({message: "OK", data: dataDelete})
-      } catch (error) {
-        res.status(500).send(error.message);
-      }
+    try {
+      const dataDelete = await InstructorModel.findOne({ _id: req.params.id });
+      await InstructorModel.deleteOne({ _id: req.params.id });
+      res.status(200).send({ message: "OK", data: dataDelete });
+    } catch (error) {
+      res.status(500).send(error.message);
+    }
   }
   static async patchInstructor(req, res) {
-      try {
-          const data = InstructorModel.findOneAndUpdate({_id: req.params.id}, req.params.body, {new: true})
-          res.status(200).send({message: "OK", data})
-      } catch (error) {
-        res.status(500).send(error.message);
-      }
+    try {
+      const { name, dateOfBirth, location } = req.body;
+      const id = req.params.id;
+      const data = await InstructorModel.findOneAndUpdate(
+        { _id: id }, req.body, {new: true});
+      res.status(200).send({ message: "OK", data });
+    } catch (error) {
+      res.status(500).send(error.message);
+    }
   }
 }
 
-module.exports = InstructorController
+module.exports = InstructorController;
