@@ -1,16 +1,19 @@
 const express = require("express")
 const PartcipantRoute = express.Router()
 
-const controller = require("../controllers/participant.controller")
+const ParticipantController = require("../controllers/participant.controller")
+const Course = require("../controllers/course.controller")
 
-PartcipantRoute.get("/", controller.getParticipants)
+PartcipantRoute.get("/", ParticipantController.getParticipants)
 
-PartcipantRoute.get("/:id", controller.getParticipant)
+PartcipantRoute.post("/:id/:courseid", Course.postCoursetoParcitipant)
 
-PartcipantRoute.post("/", controller.postParticipant)
+PartcipantRoute.post("/", ParticipantController.postParticipant)
 
-PartcipantRoute.delete("/:id", controller.deleteParticipant)
+PartcipantRoute.delete("/:id", ParticipantController.deleteParticipant)
 
-PartcipantRoute.patch("/:id", controller.patchParticipant)
+PartcipantRoute.patch("/:id", ParticipantController.patchParticipant)
+
+// PartcipantRoute.get
 
 module.exports = PartcipantRoute

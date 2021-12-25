@@ -1,9 +1,10 @@
 const CourseModel = require("../models/course.model");
+const UserModel = require("../models/participant.model");
 
 class CourseController {
   static async getCourses(req, res) {
     try {
-      const data = await CourseModel.find().populate("instructor")
+      const data = await CourseModel.find().populate("instructor");
       res.status(200).send({ message: "OK", data: data });
     } catch (error) {
       res.status(500).send({ message: error.message });
@@ -11,7 +12,9 @@ class CourseController {
   }
   static async getCourse(req, res) {
     try {
-      const data = await CourseModel.findOne({ _id: req.params.id }).populate("instructor");
+      const data = await CourseModel.findOne({ _id: req.params.id }).populate(
+        "instructor"
+      );
       res.status(200).send({ message: "OK", data: data });
     } catch (error) {
       res.status(500).send(error.message);
@@ -24,11 +27,11 @@ class CourseController {
         title: title,
         description: description,
         instructor: instructor,
-        scheduleDateTime: scheduleDateTime
+        scheduleDateTime: scheduleDateTime,
       });
 
       const saved = await data.save();
-      res.status(200).send({ message: "OK", data: saved });
+      res.status(201).send({ message: "OK", data: saved });
     } catch (error) {
       res.status(500).send(error.message);
     }
@@ -50,6 +53,29 @@ class CourseController {
         new: true,
       });
       res.status(200).send({ message: "OK", data });
+    } catch (error) {
+      res.status(500).send(error.message);
+    }
+  }
+  static async postCoursetoParcitipant(req, res) {
+    try {
+      const { id, courseid } = req.params;
+
+      const user = await UserModel.findById(id);
+      const course = await CourseModel.findById(courseid);
+
+      const isExist = user.courses.find(
+        (e) => e.toString() === course._id.toString()
+      );
+      console.log(isExist);
+
+      if (isExist) {
+        res.status(200).send({ message: "Already Have" });
+      } else {
+        user.courses.push(course._id);
+        await user.save();
+        res.status(200).send({ message: "Course Added", data: user });
+      }
     } catch (error) {
       res.status(500).send(error.message);
     }

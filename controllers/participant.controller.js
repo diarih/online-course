@@ -3,7 +3,7 @@ const ParticipantModel = require("../models/participant.model");
 class ParticipantController {
   static async getParticipants(req, res) {
     try {
-      const data = await ParticipantModel.find();
+      const data = await ParticipantModel.find().populate('courses');
       res.status(200).send({ message: "OK", data: data });
     } catch (error) {
       res.status(500).send({ message: error.message });
@@ -19,15 +19,16 @@ class ParticipantController {
   }
   static async postParticipant(req, res) {
     try {
-      const { name, dateOfBirth, location } = req.body;
+      const { name, dateOfBirth, email, phone } = req.body;
       const data = new ParticipantModel({
         name: name,
         dateOfBirth: dateOfBirth,
-        location: location,
+        email: email,
+        phone: phone,
       });
 
       const saved = await data.save();
-      res.status(200).send({ message: "OK", data: saved });
+      res.status(201).send({ message: "OK", data: saved });
     } catch (error) {
       res.status(500).send(error.message);
     }
@@ -57,4 +58,4 @@ class ParticipantController {
   }
 }
 
-module.exports = ParticipantController
+module.exports = ParticipantController;

@@ -27,7 +27,7 @@ class InstructorController {
       });
 
       const saved = await data.save();
-      res.status(200).send({ message: "OK", data: saved });
+      res.status(201).send({ message: "OK", data: saved });
     } catch (error) {
       res.status(500).send(error.message);
     }
